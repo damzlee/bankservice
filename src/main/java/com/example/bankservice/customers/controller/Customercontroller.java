@@ -1,60 +1,68 @@
 package com.example.bankservice.customers.controller;
 
+import com.example.bankservice.customers.dto.CreateCustomerRequest;
+import com.example.bankservice.customers.dto.CreateCustomerResponse;
 import com.example.bankservice.customers.model.Customer;
 import com.example.bankservice.customers.service.Customerservices;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping(path = "api/customer/{id}")
+@RequestMapping(path = "api/customer/")
+@RequiredArgsConstructor
 public class Customercontroller {
 
     @Autowired
-    private Customerservices customerservices;
+    private final Customerservices customerservices;
 
     //Create new user
     @PostMapping("/createCustomer")
-    public Customer createuser(@RequestBody Customer customer){
+    @ResponseStatus(HttpStatus.CREATED)
+    public Customer createuser(@RequestBody CreateCustomerRequest customerRequest){
 
-        return customerservices.Create(customer);
+        return customerservices.CreateUser(customerRequest);
+    }
+    @PostMapping("/addmoney")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public Customer addmoney(@RequestParam Long id ,@RequestBody Customer customer){
+        return customerservices.addmoney(id, customer);
     }
 
+    @GetMapping("/getAllCustomers")
+    @ResponseStatus(HttpStatus.OK)
+    public List<CreateCustomerResponse> getAllCustomers(){
+
+        return customerservices.getAllCustomers();
+    }
 
     //get user by id
-    @GetMapping("/getUserbyid")
-    public Optional<Customer> getUserbyid (@PathVariable Long id){
-        return customerservices.getAUserbyid(id);
+    @GetMapping("/getCustomerbyid")
+    @ResponseStatus(HttpStatus.OK)
+    public Optional<Customer> getUserbyid (@RequestParam Long id){
+        return customerservices.getCustomerById(id);
     }
 
     //Update User
-    @PutMapping("/updateuser")
-    public Customer updateuser(@PathVariable Long id, @RequestBody Customer customer){
+    @PostMapping("/updateuser")
+    public Customer updateuser(@RequestParam Long id, @RequestBody Customer customer){
         return customerservices.updateCustomer(id,customer);
     }
 
-    //accountnumber
-    @PutMapping("/accountnumber")
-    public Customer accountnumber(@RequestBody Customer customer){
-        return customerservices.generateaccountnumber(customer);
+//withrawal
+    @PostMapping ("/withrawal")
+    public Customer withdrawal(@RequestParam Long id , @RequestBody Customer customer){
+        return customerservices.withrawal(id,customer);
     }
 
-    //check
-    @GetMapping(path = "/balanceafteraddingmoney",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Optional<Customer> balanceafteradding(@RequestParam(name = "id") Long id){
-       return customerservices.getCustomerById(id);
-    }
-
-    @GetMapping ("/balanceafterwithrawal")
-    public Customer balanceafterwithdrawal(@RequestBody Customer customer){
-        return customerservices.balanceafterwithrawal(customer);
-    }
-
-    @GetMapping("/tranferdetails")
-    public Customer tranferdetails( @RequestBody Customer accountnumber, Customer customer){
-        return customerservices.transferdetails(customer, String.valueOf(accountnumber));
-    }
-
+    //transferdetails
+   @PostMapping("/transfer")
+    public Customer transfer(@RequestParam Long id, @RequestBody Customer customer){
+        return  customerservices.transferdetails(id,customer);
+   }
 }

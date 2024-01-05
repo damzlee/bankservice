@@ -1,11 +1,8 @@
 package com.example.bankservice.notification.model;
 
 
-import com.example.bankservice.customers.model.Customer;
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.util.Date;
 
 @ToString
 @Getter
@@ -14,10 +11,11 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table
-public class notification {
-@Id
-    private String to;
+public class notifications {
+    @Id
+    @GeneratedValue
+    private Long id;
+    private String messageTo;
     private String subject;
     private String message;
 

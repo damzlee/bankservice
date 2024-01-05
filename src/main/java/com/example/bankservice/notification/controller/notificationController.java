@@ -1,14 +1,11 @@
 package com.example.bankservice.notification.controller;
 
-import com.example.bankservice.customers.model.Customer;
 import org.springframework.http.ResponseEntity;
 import com.example.bankservice.notification.service.notificationService;
-import com.example.bankservice.notification.model.notification;
+import com.example.bankservice.notification.model.notifications;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.management.Notification;
 
 @RestController
 public class notificationController {
@@ -20,8 +17,8 @@ public class notificationController {
     }
 
     @PostMapping("/sendEmail")
-    public ResponseEntity sendMail(@RequestBody notification notification){
-this.notificationService.sendEmail(notification.getTo(), notification.getSubject(), notification.getMessage());
+    public ResponseEntity sendMail(@RequestBody notifications notification){
+this.notificationService.sendEmail(notification.getMessageTo(), notification.getSubject(), notification.getMessage());
 return ResponseEntity.ok("sucess");
     }
 }

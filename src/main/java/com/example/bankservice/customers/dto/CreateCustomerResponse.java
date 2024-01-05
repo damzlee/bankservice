@@ -1,22 +1,12 @@
-package com.example.bankservice.customers.model;
+package com.example.bankservice.customers.dto;
 
-import jakarta.persistence.*;
 import lombok.*;
 
-import java.lang.annotation.Documented;
-import java.math.BigDecimal;
-
-@ToString
-@Getter
-@Setter
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Builder
-@Entity
-public class Customer {
-    @Id
-    @GeneratedValue
+@AllArgsConstructor
+@NoArgsConstructor
+public class CreateCustomerResponse {
     private Long id;
     private String username;
     private Integer password;
@@ -26,6 +16,4 @@ public class Customer {
     private String accountNumber;
     private Float Balance;
     private Float Amount;
-
 }
-
